@@ -16,6 +16,8 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		F4047E242B9C502F00BD3E81 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4047E222B9C502F00BD3E81 /* YS Display-Bold.ttf */; };
+		F4047E252B9C502F00BD3E81 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4047E232B9C502F00BD3E81 /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		F4047E222B9C502F00BD3E81 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		F4047E232B9C502F00BD3E81 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F4047E1F2B9C4FFA00BD3E81 /* Fonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -114,6 +119,23 @@
 				AD77F5732857F8810062FB14 /* Date+Extensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F4047E1F2B9C4FFA00BD3E81 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F4047E212B9C500800BD3E81 /* YS Display */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		F4047E212B9C500800BD3E81 /* YS Display */ = {
+			isa = PBXGroup;
+			children = (
+				F4047E222B9C502F00BD3E81 /* YS Display-Bold.ttf */,
+				F4047E232B9C502F00BD3E81 /* YS Display-Medium.ttf */,
+			);
+			path = "YS Display";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +200,8 @@
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
+				F4047E242B9C502F00BD3E81 /* YS Display-Bold.ttf in Resources */,
+				F4047E252B9C502F00BD3E81 /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +385,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yandex-practicum.movie-quiz";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leonidlavrov.movie-quiz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -394,7 +418,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yandex-practicum.movie-quiz";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leonidlavrov.movie-quiz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
