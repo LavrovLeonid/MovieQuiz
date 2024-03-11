@@ -91,6 +91,10 @@ final class MovieQuizViewController: UIViewController {
         show(quiz: convert(model: currentQuestion))
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
