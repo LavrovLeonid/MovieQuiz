@@ -35,26 +35,22 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        let givenAnswer = true
-        
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        answerGived(givenAnswer: true)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        answerGived(givenAnswer: false)
+    }
+    
+    // MARK: Private methods
+    private func answerGived(givenAnswer: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
         
-        let givenAnswer = false
-        
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
-    // MARK: Private methods
+        
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
