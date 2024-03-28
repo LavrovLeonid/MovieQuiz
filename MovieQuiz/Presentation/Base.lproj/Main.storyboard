@@ -25,7 +25,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yuV-Pz-tBI">
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yuV-Pz-tBI">
                                 <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dKv-bK-hac">
@@ -109,6 +109,7 @@
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="NZb-lW-1Zn">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <color key="color" name="YP White"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -127,6 +128,7 @@
                         <outlet property="counterLabel" destination="E7S-Qb-agp" id="yR1-ke-lEj"/>
                         <outlet property="imageView" destination="q8X-zQ-dTC" id="KsT-AR-Uzq"/>
                         <outlet property="noButton" destination="9LD-HN-ZbI" id="BrV-TF-GSh"/>
+                        <outlet property="stackView" destination="yuV-Pz-tBI" id="qag-HI-aTV"/>
                         <outlet property="textLabel" destination="63D-LQ-OwO" id="gvK-fh-gnu"/>
                         <outlet property="yesButton" destination="hep-fA-Rkh" id="ese-yT-7Ul"/>
                     </connections>
