@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var stackView: UIStackView!
     
     // MARK: Private properties
     
@@ -15,7 +17,7 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion?
     
-    private var questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol = QuestionFactory(moviesLoader: MoviesLoader())
     private var alertPresenter: AlertPresenterProtocol = AlertPresenter()
     private var statisticService: StatisticServiceProtocol = StatisticService()
     
@@ -24,9 +26,11 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         alertPresenter.delegate = self
-        
         questionFactory.delegate = self
-        questionFactory.requestNextQuestion()
+        
+        showLoadingIndicator()
+        
+        questionFactory.loadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,18 +48,21 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: Private methods
     private func answerGived(givenAnswer: Bool) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
+        guard let currentQuestion else { return }
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
         
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
+        )
     }
     
     private func show(quiz step: QuizStepViewModel) {
+        stackView.isHidden = false
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -68,7 +75,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func show(quiz result: QuizResultsViewModel) {
         alertPresenter.show(alertModel: AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             
             currentQuestionIndex = 0
             correctAnswers = 0
@@ -90,9 +97,7 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            
-            showNextQuestionOrResults()
+            self?.showNextQuestionOrResults()
         }
     }
     
@@ -107,6 +112,26 @@ final class MovieQuizViewController: UIViewController {
             questionFactory.requestNextQuestion()
         }
     }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        alertPresenter.show(alertModel: AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз") { [weak self] in
+            guard let self else { return }
+            
+            showLoadingIndicator()
+            
+            questionFactory.loadData()
+        })
+    }
 }
 
 // MARK: - QuestionFactoryDelegate
@@ -116,10 +141,18 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         
         currentQuestion = question
         
-        let viewModel = convert(model: question)
+        show(quiz: convert(model: question))
+    }
+    
+    func didLoadDataFromServer() {
+        hideLoadingIndicator()
         
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        hideLoadingIndicator()
+        
+        showNetworkError(message: error.localizedDescription)
     }
 }
