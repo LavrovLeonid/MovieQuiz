@@ -82,6 +82,8 @@ final class QuestionFactory: QuestionFactoryProtocol {
     }
     
     func requestNextQuestion() {
+        delegate?.didRequestNextQuestion()
+        
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
             
@@ -90,6 +92,10 @@ final class QuestionFactory: QuestionFactoryProtocol {
             guard let movie = self.movies[safe: randomIndexMovie] else { return }
             
             let imageData = try? Data(contentsOf: movie.resizedImageURL)
+            
+            if imageData == nil {
+                print("Failed to load image")
+            }
             
             let randomQuestionRating = (5..<10).randomElement() ?? 0
             

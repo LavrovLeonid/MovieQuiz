@@ -74,14 +74,16 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        alertPresenter.show(alertModel: AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self] in
+        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) { [weak self] in
             guard let self else { return }
             
             currentQuestionIndex = 0
             correctAnswers = 0
             
             questionFactory.requestNextQuestion()
-        })
+        }
+        
+        alertPresenter.show(alertModel: alertModel)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -105,7 +107,12 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             
-            show(quiz: QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат: \(correctAnswers)/\(questionsAmount)\n\(statisticService.getStatistic())", buttonText: "Сыграть ещё раз"))
+            let quiz = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: "Ваш результат: \(correctAnswers)/\(questionsAmount)\n\(statisticService.getStatistic())", buttonText: "Сыграть ещё раз"
+            )
+            
+            show(quiz: quiz)
         } else {
             currentQuestionIndex += 1
             
@@ -124,20 +131,26 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showNetworkError(message: String) {
-        alertPresenter.show(alertModel: AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз") { [weak self] in
+        let alertModel = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз") { [weak self] in
             guard let self else { return }
             
             showLoadingIndicator()
             
             questionFactory.loadData()
-        })
+        }
+        
+        alertPresenter.show(alertModel: alertModel)
     }
 }
 
 // MARK: - QuestionFactoryDelegate
 extension MovieQuizViewController: QuestionFactoryDelegate {
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else { return }
+    func didRequestNextQuestion() {
+        showLoadingIndicator()
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion) {
+        hideLoadingIndicator()
         
         currentQuestion = question
         
