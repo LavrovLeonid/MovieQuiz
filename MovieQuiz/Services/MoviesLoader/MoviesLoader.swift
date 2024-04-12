@@ -10,13 +10,18 @@ import Foundation
 struct MoviesLoader: MoviesLoaderProtocol {
     // MARK: Private properties
     private let apiKey = "k_zcuw1ytf"
-    private let networkClient: NetworkClientProtocol = NetworkClient()
+    private let networkClient: NetworkClientProtocol
     private var mostPopularMoviesUrl: URL {
         guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/\(apiKey)") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         
         return url
+    }
+    
+    // MARK: Initializator
+    init(networkClient: NetworkClientProtocol) {
+        self.networkClient = networkClient
     }
     
     // MARK: Methods

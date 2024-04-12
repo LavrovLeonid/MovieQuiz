@@ -17,7 +17,11 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion?
     
-    private var questionFactory: QuestionFactoryProtocol = QuestionFactory(moviesLoader: MoviesLoader())
+    private var questionFactory: QuestionFactoryProtocol = QuestionFactory(
+        moviesLoader: MoviesLoader(
+            networkClient: NetworkClient()
+        )
+    )
     private var alertPresenter: AlertPresenterProtocol = AlertPresenter()
     private var statisticService: StatisticServiceProtocol = StatisticService()
     
