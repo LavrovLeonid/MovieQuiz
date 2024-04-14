@@ -15,7 +15,6 @@ final class MovieQuizViewController: UIViewController {
     // MARK: Private properties
     
     private var correctAnswers = 0
-    private var currentQuestion: QuizQuestion?
     
     private var questionFactory: QuestionFactoryProtocol = QuestionFactory(
         moviesLoader: MoviesLoader(
@@ -28,11 +27,14 @@ final class MovieQuizViewController: UIViewController {
     private let presenter = MovieQuizPresenter()
     
     // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         alertPresenter.delegate = self
         questionFactory.delegate = self
+        
+        presenter.viewController = self
         
         showLoadingIndicator()
         
@@ -44,20 +46,35 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: Actions
+    
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        answerGived(givenAnswer: true)
+        presenter.yesButtonTapped()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        answerGived(givenAnswer: false)
+        presenter.noButtonTapped()
+    }
+    
+    // MARK: Methods
+    
+    func showAnswerResult(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1
+        }
+        
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.showNextQuestionOrResults()
+        }
     }
     
     // MARK: Private methods
-    private func answerGived(givenAnswer: Bool) {
-        guard let currentQuestion else { return }
-        
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-    }
     
     private func show(quiz step: QuizStepViewModel) {
         stackView.isHidden = false
@@ -83,23 +100,6 @@ final class MovieQuizViewController: UIViewController {
         }
         
         alertPresenter.show(alertModel: alertModel)
-    }
-    
-    private func showAnswerResult(isCorrect: Bool) {
-        if isCorrect {
-            correctAnswers += 1
-        }
-        
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.showNextQuestionOrResults()
-        }
     }
     
     private func showNextQuestionOrResults() {
@@ -151,7 +151,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     func didReceiveNextQuestion(question: QuizQuestion) {
         hideLoadingIndicator()
         
-        currentQuestion = question
+        presenter.setNextQuestion(question: question)
         
         show(quiz: presenter.convert(model: question))
     }
