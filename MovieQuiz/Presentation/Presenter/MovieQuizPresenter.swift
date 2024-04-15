@@ -41,15 +41,17 @@ final class MovieQuizPresenter {
         questionFactory.loadData()
     }
     
-    // MARK: Private methods
+    // MARK: Public for testing!!!
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
     }
+    
+    // MARK: Private methods
     
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion else { return }
