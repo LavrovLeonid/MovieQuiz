@@ -8,12 +8,15 @@
 import Foundation
 
 struct NetworkClient: NetworkClientProtocol {
+    
     // MARK: Private structs
+    
     private enum NetworkError: Error {
         case codeError
     }
     
     // MARK: Methods
+    
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         
@@ -35,4 +38,5 @@ struct NetworkClient: NetworkClientProtocol {
         
         task.resume()
     }
+    
 }

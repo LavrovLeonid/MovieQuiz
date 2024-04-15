@@ -8,7 +8,5 @@
 import UIKit
 
 protocol AlertPresenterProtocol {
-    var delegate: UIViewController? { get set }
-    
     func show(alertModel: AlertModel)
 }
