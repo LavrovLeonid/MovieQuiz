@@ -9,6 +9,7 @@ import Foundation
 
 final class StatisticService: StatisticServiceProtocol {
     // MARK: Private properties
+    
     private let userDefaults = UserDefaults.standard
     
     private enum Keys: String {
@@ -16,6 +17,7 @@ final class StatisticService: StatisticServiceProtocol {
     }
     
     // MARK: Properties
+    
     var gamesCount: Int {
         get {
             guard let data = userDefaults.data(forKey: Keys.gamesCount.rawValue),
@@ -97,6 +99,7 @@ final class StatisticService: StatisticServiceProtocol {
     }
     
     // MARK: Methods
+    
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
         totalQuestionsCount += amount
@@ -116,4 +119,5 @@ final class StatisticService: StatisticServiceProtocol {
         Средняя точность: \(String(format: "%.2f", totalAccuracy))%
         """
     }
+    
 }
